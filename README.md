@@ -8,6 +8,22 @@ This tool will help you to download the pictures and set the correct exif for yo
 
 ### Usage
 
+Step 1) fetch events
+
+`node fetchevents.js magiccookie`
+
+Step 2) download photos and videos
+
+`node downloadpic.js magiccookie`
+
+Step 3) modify the exif info
+
+`node modifyexif.js`
+
+Step 4) copy the files and upload to somewhere
+
+`cp data/**/*-mod.jpg finaldata && cp data/**/*.MOV finaldata`
+
 ### App protocol
 
 #### Login

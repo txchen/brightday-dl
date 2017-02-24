@@ -45,6 +45,7 @@ async function processEventJson (fileName) {
       }
       comment += '{ ' + evt.members_display.join(',') + ' }'
       exifObj.Exif[piexif.ExifIFD.UserComment] = comment
+      //exifObj['0th'][piexif.ImageIFD.ImageDescription] = comment
       const exifbytes = piexif.dump(exifObj)
       const newBinary = piexif.insert(exifbytes, fileBinary)
       const newJpeg = new Buffer(newBinary, 'binary')
