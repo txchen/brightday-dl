@@ -1,9 +1,8 @@
 const axios = require('axios')
-const mkdirp = require('mkdirp')
-const crypto = require('crypto')
 const fs = require('fs')
 const path = require('path')
-const util = require('util')
+
+let downloadCount = 0
 
 function printUsage() {
   console.log('Usage: node downloadpic.js magiccookie')
@@ -22,7 +21,6 @@ const walkSync = (dir, filelist = []) => {
 
 async function processEventJson (fileName, cookie) {
   const evt = require('./' + fileName)
-  let downloadCount = 0
   for (const att of evt.new_attachments) {
     let dlFileName = `${evt.event_date}-${att.filename}`
     if (att.mime_type === 'image/jpeg') {
@@ -30,7 +28,7 @@ async function processEventJson (fileName, cookie) {
     }
     const fullDlFileName = ('./' + fileName).replace(/\d{4}-\d{2}-\d{2}-\w+\.json$/, dlFileName)
     console.log(`downloading ${att.filename} to ${fullDlFileName}`)
-    if (fs.statSync(fullDlFileName).size > 0) {
+    if (fs.existsSync(fullDlFileName) && fs.statSync(fullDlFileName).size > 0) {
       console.log(`    file already downloaded`)
     } else {
       downloadCount++
@@ -42,7 +40,6 @@ async function processEventJson (fileName, cookie) {
       stream.end()
     }
   }
-  console.log(`Process complete, downloaded ${downloadCount} files`)
 }
 
 async function main () {
@@ -54,7 +51,7 @@ async function main () {
   for (const f of allFiles) {
     await processEventJson(f, process.argv[2])
   }
-  console.log('Done!')
+  console.log(`Done! downloaded ${downloadCount} files`)
 }
 
 main().catch(err => {
