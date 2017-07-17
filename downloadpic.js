@@ -22,7 +22,7 @@ const walkSync = (dir, filelist = []) => {
 async function processEventJson (fileName, cookie) {
   const evt = require('./' + fileName)
   for (const att of evt.new_attachments) {
-    let dlFileName = `${evt.event_date}-${att.filename}`
+    let dlFileName = `${evt.event_date}-${evt.event_time}-${att.filename}`
     if (att.mime_type === 'image/jpeg') {
       dlFileName = dlFileName.replace('.bin', '.jpg')
     }

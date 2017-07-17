@@ -14,7 +14,7 @@ const walkSync = (dir, filelist = []) => {
 function unixTimeToExifTime (unixTime) {
   const date = new Date(unixTime * 1000)
   return date.getFullYear() + ':' + ('0' + (date.getMonth() + 1)).slice(-2) + ':' + ('0' + date.getDate()).slice(-2) + ' ' +
-    ('0' + (date.getHours() + 1)).slice(-2) + ':' + ('0' + (date.getMinutes() + 1)).slice(-2) + ':' + ('0' + (date.getSeconds() + 1)).slice(-2)
+    ('0' + date.getHours()).slice(-2) + ':' + ('0' + date.getMinutes()).slice(-2) + ':' + ('0' + date.getSeconds()).slice(-2)
 }
 
 let okCount = 0
@@ -24,7 +24,7 @@ let skipCount = 0
 async function processEventJson (fileName) {
   const evt = require('./' + fileName)
   for (const att of evt.new_attachments) {
-    let mediaFileName = `${evt.event_date}-${att.filename}`
+    let mediaFileName = `${evt.event_date}-${evt.event_time}-${att.filename}`
     if (att.mime_type !== 'image/jpeg') {
       skipCount++
       console.log(`Skipping ${mediaFileName}`)
